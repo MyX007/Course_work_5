@@ -53,6 +53,10 @@ def create_tables(host, database, user, password):
             password=password
     ) as conn:
         with conn.cursor() as cur:
+            cur.execute("CREATE TABLE IF NOT EXISTS employers (employer_id int , "
+                        "name varchar(100) NOT NULL, link varchar(100) NOT NULL, "
+                        "description varchar(100), "
+                        "CONSTRAINT pk_employers_employer_id PRIMARY KEY (employer_id))")
 
             cur.execute("CREATE TABLE IF NOT EXISTS vacancies (vac_id int , vac_name varchar(100) NOT NULL, "
                         "link_to_vac varchar(100) NOT NULL, employer varchar(100) NOT NULL, "
@@ -61,10 +65,5 @@ def create_tables(host, database, user, password):
                         "CONSTRAINT pk_vacancies_vac_id PRIMARY KEY (vac_id),"
                         "CONSTRAINT pk_employers_employer_id FOREIGN KEY (employer_id) "
                         "REFERENCES employers(employer_id))")
-
-            cur.execute("CREATE TABLE IF NOT EXISTS employers (employer_id int , "
-                        "name varchar(100) NOT NULL, link varchar(100) NOT NULL, "
-                        "description varchar(100), "
-                        "CONSTRAINT pk_employers_employer_id PRIMARY KEY (employer_id))")
 
             conn.commit()
